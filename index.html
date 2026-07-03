@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Panel de Operaciones</title>
+<style>
+  :root{
+    --bg-0:#0d1117;
+    --bg-1:#141b23;
+    --panel:#1a232d;
+    --line:#2a3641;
+    --ink-0:#eef2f5;
+    --ink-1:#96a5b3;
+    --amber:#e8a13d;
+    --teal:#3ea8a3;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(232,161,61,0.06), transparent 60%),
+      radial-gradient(900px 500px at 100% 10%, rgba(62,168,163,0.05), transparent 55%),
+      var(--bg-0);
+    color:var(--ink-0);
+    font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:28px 16px 60px;
+  }
+
+  @font-face{
+    font-family:'IBM Plex Sans';
+    src:local('IBM Plex Sans');
+  }
+
+  header{
+    width:100%;
+    max-width:640px;
+    margin-bottom:26px;
+  }
+
+  .eyebrow{
+    font-family:"IBM Plex Mono", "Courier New", monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--amber);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;
+    background:var(--amber);
+    display:inline-block;
+    border-radius:1px;
+    transform:rotate(45deg);
+  }
+
+  h1{
+    font-family:"IBM Plex Sans", sans-serif;
+    font-weight:700;
+    font-size:26px;
+    letter-spacing:-0.01em;
+    color:var(--ink-0);
+    margin-bottom:6px;
+  }
+  header p{
+    font-size:13.5px;
+    color:var(--ink-1);
+    line-height:1.5;
+  }
+
+  main{
+    width:100%;
+    max-width:640px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  a.card{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 18px;
+    text-decoration:none;
+    color:var(--ink-0);
+    overflow:hidden;
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  a.card:active{ transform:scale(0.98); }
+  a.card:hover{
+    border-color: var(--card-accent, var(--amber));
+    background:#1d2731;
+  }
+  a.card::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:3px;
+    background:var(--card-accent, var(--amber));
+    opacity:.85;
+  }
+
+  .icon-wrap{
+    flex:0 0 auto;
+    width:44px; height:44px;
+    border-radius:9px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--card-accent, var(--amber));
+  }
+  .icon-wrap svg{ width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.7; }
+
+  .card-text{ flex:1 1 auto; min-width:0; }
+  .card-text .label-id{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    color: var(--card-accent, var(--amber));
+    text-transform:uppercase;
+    margin-bottom:3px;
+    opacity:.9;
+  }
+  .card-text .label-name{
+    font-size:15.5px;
+    font-weight:600;
+    color:var(--ink-0);
+    line-height:1.25;
+  }
+  .card-text .label-desc{
+    font-size:12px;
+    color:var(--ink-1);
+    margin-top:2px;
+  }
+
+  .go{
+    flex:0 0 auto;
+    color:var(--ink-1);
+    font-size:18px;
+    transition: transform .15s ease, color .15s ease;
+  }
+  a.card:hover .go{
+    color:var(--card-accent, var(--amber));
+    transform:translateX(3px);
+  }
+
+  footer{
+    margin-top:34px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:10.5px;
+    color:#5c6b78;
+    letter-spacing:.05em;
+    text-align:center;
+  }
+
+  @media (max-width:420px){
+    h1{ font-size:22px; }
+    a.card{ padding:15px; gap:12px; }
+    .icon-wrap{ width:38px; height:38px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Acceso rápido</div>
+  <h1>Panel de Operaciones</h1>
+  <p>Todas tus herramientas de campo y bodega, reunidas en un solo lugar. Toca una tarjeta para abrir la app correspondiente.</p>
+</header>
+
+<main id="grid"></main>
+
+<footer>PANEL LOCAL &nbsp;·&nbsp; SIN SERVIDOR &nbsp;·&nbsp; ENLACES DIRECTOS</footer>
+
+<script>
+  const tools = [
+    {
+      id: "01",
+      name: "Actas manuales",
+      desc: "Registro y firma de actas",
+      url: "https://cbonillatn.github.io/actas-telconet/",
+      accent: "#e8a13d",
+      icon: `<path d="M7 3h8l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M15 3v4h4"/><path d="M9 13h6"/><path d="M9 17h6"/><path d="M9 9h2"/>`
+    },
+    {
+      id: "02",
+      name: "Salida de personal",
+      desc: "Control de salidas del personal",
+      url: "https://cbonillatn.github.io/SALIDA_PERSONAL/",
+      accent: "#e05d5d",
+      icon: `<path d="M15 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>`
+    },
+    {
+      id: "03",
+      name: "Ubicaciones y movimientos",
+      desc: "Seguimiento de ubicaciones",
+      url: "https://cbonillatn.github.io/ubicaciones-y-movimientos/",
+      accent: "#3ea8a3",
+      icon: `<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/>`
+    },
+    {
+      id: "04",
+      name: "Palets de bodega",
+      desc: "Inventario de palets en bodega",
+      url: "https://cbonillatn.github.io/bodega-palets/",
+      accent: "#7a8fd6",
+      icon: `<path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/>`
+    },
+    {
+      id: "05",
+      name: "Toma de inventarios",
+      desc: "Conteo y registro de inventario",
+      url: "https://cbonillatn.github.io/Toma-inventario-app/",
+      accent: "#8fbf5f",
+      icon: `<path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6"/><path d="M9 16h6"/>`
+    },
+    {
+      id: "06",
+      name: "Control de repuestos",
+      desc: "Gestión de repuestos",
+      url: "https://script.google.com/macros/s/AKfycbxgPITtnx1BwMhesIwbpEXGYLdBxnjFObUjxEBmeJywZgFmhlle-1n-24JahV5bCOvD/exec",
+      accent: "#c98fd6",
+      icon: `<path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4z"/>`
+    }
+  ];
+
+  const grid = document.getElementById('grid');
+  tools.forEach(t => {
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = t.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.style.setProperty('--card-accent', t.accent);
+    a.innerHTML = `
+      <div class="icon-wrap"><svg viewBox="0 0 24 24">${t.icon}</svg></div>
+      <div class="card-text">
+        <div class="label-id">${t.id} · Herramienta</div>
+        <div class="label-name">${t.name}</div>
+        <div class="label-desc">${t.desc}</div>
+      </div>
+      <div class="go">→</div>
+    `;
+    grid.appendChild(a);
+  });
+</script>
+
+</body>
+</html>
