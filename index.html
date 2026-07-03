@@ -165,27 +165,219 @@
     text-align:center;
   }
 
+  /* header row + settings trigger */
+  .top-row{
+    width:100%; max-width:640px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .gear-btn{
+    flex:0 0 auto;
+    width:40px; height:40px;
+    border-radius:9px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--ink-1);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition: color .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .gear-btn:hover{ color:var(--amber); border-color:var(--amber); transform:rotate(20deg); }
+  .gear-btn svg{ width:19px; height:19px; stroke:currentColor; fill:none; stroke-width:1.7; }
+
+  /* modal */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(6,9,12,0.72);
+    backdrop-filter: blur(2px);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding:28px 16px;
+    overflow-y:auto;
+    z-index:50;
+  }
+  .overlay.open{ display:flex; }
+
+  .modal{
+    width:100%; max-width:560px;
+    background:var(--bg-1);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px;
+    animation: pop .16s ease;
+  }
+  @keyframes pop{ from{ opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .modal-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .modal-head h2{ font-size:17px; font-weight:700; }
+  .close-btn{
+    background:none; border:none; color:var(--ink-1);
+    font-size:20px; line-height:1; cursor:pointer; padding:4px;
+  }
+  .close-btn:hover{ color:var(--ink-0); }
+  .modal-sub{ font-size:12.5px; color:var(--ink-1); margin-bottom:18px; }
+
+  .existing-list{
+    display:flex; flex-direction:column; gap:8px;
+    margin-bottom:20px;
+    max-height:240px;
+    overflow-y:auto;
+  }
+  .existing-row{
+    display:flex; align-items:center; gap:10px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px 10px;
+  }
+  .existing-row .dot{
+    width:9px; height:9px; border-radius:2px; flex:0 0 auto;
+    background:var(--row-accent, var(--amber));
+    transform:rotate(45deg);
+  }
+  .existing-row .info{ flex:1 1 auto; min-width:0; }
+  .existing-row .info .r-name{ font-size:13.5px; font-weight:600; color:var(--ink-0); }
+  .existing-row .info .r-url{
+    font-size:11px; color:var(--ink-1);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .del-btn{
+    flex:0 0 auto;
+    background:none; border:1px solid var(--line);
+    color:var(--ink-1);
+    width:28px; height:28px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .del-btn:hover{ color:#e05d5d; border-color:#e05d5d; }
+  .empty-note{ font-size:12.5px; color:var(--ink-1); padding:10px 2px; }
+
+  .divider{ height:1px; background:var(--line); margin:16px 0; }
+
+  .field{ margin-bottom:12px; }
+  .field label{
+    display:block; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-1); margin-bottom:6px; font-family:"IBM Plex Mono", monospace;
+  }
+  .field input{
+    width:100%;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+    color:var(--ink-0);
+    font-size:13.5px;
+    outline:none;
+  }
+  .field input:focus{ border-color:var(--amber); }
+  .field-row{ display:flex; gap:10px; }
+  .field-row .field{ flex:1 1 auto; }
+  .swatch-row{ display:flex; gap:8px; margin-top:6px; }
+  .swatch{
+    width:24px; height:24px; border-radius:6px; cursor:pointer;
+    border:2px solid transparent;
+  }
+  .swatch.selected{ border-color:var(--ink-0); }
+
+  .modal-actions{ display:flex; gap:10px; margin-top:6px; }
+  .btn{
+    flex:1 1 auto;
+    padding:11px 14px;
+    border-radius:8px;
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+    border:1px solid var(--line);
+    background:none;
+    color:var(--ink-0);
+  }
+  .btn-primary{ background:var(--amber); border-color:var(--amber); color:#1a1305; }
+  .btn-primary:hover{ filter:brightness(1.08); }
+  .btn-ghost:hover{ border-color:var(--ink-1); }
+  .reset-line{
+    text-align:center; margin-top:16px;
+  }
+  .reset-line button{
+    background:none; border:none; color:var(--ink-1);
+    font-size:11.5px; text-decoration:underline; cursor:pointer;
+  }
+  .reset-line button:hover{ color:#e05d5d; }
+
   @media (max-width:420px){
     h1{ font-size:22px; }
     a.card{ padding:15px; gap:12px; }
     .icon-wrap{ width:38px; height:38px; }
+    .field-row{ flex-direction:column; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="eyebrow">Acceso rápido</div>
-  <h1>Panel de Operaciones</h1>
-  <p>Todas tus herramientas de campo y bodega, reunidas en un solo lugar. Toca una tarjeta para abrir la app correspondiente.</p>
-</header>
+<div class="top-row">
+  <header>
+    <div class="eyebrow">Acceso rápido</div>
+    <h1>Panel de Operaciones</h1>
+    <p>Todas tus herramientas de campo y bodega, reunidas en un solo lugar. Toca una tarjeta para abrir la app correspondiente.</p>
+  </header>
+  <button class="gear-btn" id="openSettings" title="Configurar botones" aria-label="Configurar botones">
+    <svg viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+</div>
 
 <main id="grid"></main>
 
 <footer>PANEL LOCAL &nbsp;·&nbsp; SIN SERVIDOR &nbsp;·&nbsp; ENLACES DIRECTOS</footer>
 
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Configurar botones</h2>
+      <button class="close-btn" id="closeSettings" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="modal-sub">Agrega, edita o elimina los accesos directos de tu panel.</div>
+
+    <div class="existing-list" id="existingList"></div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Nombre del botón</label>
+      <input type="text" id="f-name" placeholder="Ej. Control de guías">
+    </div>
+    <div class="field">
+      <label>Dirección (URL)</label>
+      <input type="text" id="f-url" placeholder="https://...">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Descripción (opcional)</label>
+        <input type="text" id="f-desc" placeholder="Breve detalle">
+      </div>
+    </div>
+    <div class="field">
+      <label>Color</label>
+      <div class="swatch-row" id="swatchRow"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="addBtn">Agregar botón</button>
+    </div>
+
+    <div class="reset-line">
+      <button id="resetBtn">Restablecer lista original</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const tools = [
+  const DEFAULT_TOOLS = [
     {
       id: "01",
       name: "Actas manuales",
@@ -236,25 +428,165 @@
     }
   ];
 
+  const GENERIC_ICON = `<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>`;
+  const STORAGE_KEY = "panelOperaciones.tools.v1";
+  const ACCENTS = ["#e8a13d", "#e05d5d", "#3ea8a3", "#7a8fd6", "#8fbf5f", "#c98fd6", "#f0698a", "#5fb3e0"];
+
+  let selectedAccent = ACCENTS[0];
+
+  function loadTools(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(Array.isArray(parsed) && parsed.length) return parsed;
+      }
+    }catch(e){ /* ignore corrupt storage */ }
+    return DEFAULT_TOOLS.slice();
+  }
+
+  function saveTools(list){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  let tools = loadTools();
+
   const grid = document.getElementById('grid');
-  tools.forEach(t => {
-    const a = document.createElement('a');
-    a.className = 'card';
-    a.href = t.url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.style.setProperty('--card-accent', t.accent);
-    a.innerHTML = `
-      <div class="icon-wrap"><svg viewBox="0 0 24 24">${t.icon}</svg></div>
-      <div class="card-text">
-        <div class="label-id">${t.id} · Herramienta</div>
-        <div class="label-name">${t.name}</div>
-        <div class="label-desc">${t.desc}</div>
-      </div>
-      <div class="go">→</div>
-    `;
-    grid.appendChild(a);
+  const existingList = document.getElementById('existingList');
+  const overlay = document.getElementById('overlay');
+  const swatchRow = document.getElementById('swatchRow');
+
+  function renderGrid(){
+    grid.innerHTML = "";
+    tools.forEach((t, i) => {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = t.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.style.setProperty('--card-accent', t.accent);
+      a.innerHTML = `
+        <div class="icon-wrap"><svg viewBox="0 0 24 24">${t.icon || GENERIC_ICON}</svg></div>
+        <div class="card-text">
+          <div class="label-id">${String(i+1).padStart(2,'0')} · Herramienta</div>
+          <div class="label-name">${escapeHtml(t.name)}</div>
+          <div class="label-desc">${escapeHtml(t.desc || '')}</div>
+        </div>
+        <div class="go">→</div>
+      `;
+      grid.appendChild(a);
+    });
+  }
+
+  function renderExistingList(){
+    existingList.innerHTML = "";
+    if(!tools.length){
+      existingList.innerHTML = `<div class="empty-note">Aún no tienes botones. Agrega uno abajo.</div>`;
+      return;
+    }
+    tools.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = 'existing-row';
+      row.style.setProperty('--row-accent', t.accent);
+      row.innerHTML = `
+        <div class="dot"></div>
+        <div class="info">
+          <div class="r-name">${escapeHtml(t.name)}</div>
+          <div class="r-url">${escapeHtml(t.url)}</div>
+        </div>
+        <button class="del-btn" data-idx="${i}" title="Eliminar">&times;</button>
+      `;
+      existingList.appendChild(row);
+    });
+    existingList.querySelectorAll('.del-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        tools.splice(idx, 1);
+        saveTools(tools);
+        renderGrid();
+        renderExistingList();
+      });
+    });
+  }
+
+  function renderSwatches(){
+    swatchRow.innerHTML = "";
+    ACCENTS.forEach(color => {
+      const sw = document.createElement('div');
+      sw.className = 'swatch' + (color === selectedAccent ? ' selected' : '');
+      sw.style.background = color;
+      sw.addEventListener('click', () => {
+        selectedAccent = color;
+        renderSwatches();
+      });
+      swatchRow.appendChild(sw);
+    });
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function normalizeUrl(u){
+    u = u.trim();
+    if(!/^https?:\/\//i.test(u)) u = "https://" + u;
+    return u;
+  }
+
+  document.getElementById('openSettings').addEventListener('click', () => {
+    renderExistingList();
+    renderSwatches();
+    overlay.classList.add('open');
   });
+  document.getElementById('closeSettings').addEventListener('click', () => {
+    overlay.classList.remove('open');
+  });
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay) overlay.classList.remove('open');
+  });
+
+  document.getElementById('addBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('f-name');
+    const urlInput = document.getElementById('f-url');
+    const descInput = document.getElementById('f-desc');
+
+    const name = nameInput.value.trim();
+    const urlRaw = urlInput.value.trim();
+
+    if(!name || !urlRaw){
+      alert('Por favor ingresa un nombre y una dirección (URL).');
+      return;
+    }
+
+    tools.push({
+      name: name,
+      url: normalizeUrl(urlRaw),
+      desc: descInput.value.trim(),
+      accent: selectedAccent,
+      icon: GENERIC_ICON
+    });
+    saveTools(tools);
+
+    nameInput.value = "";
+    urlInput.value = "";
+    descInput.value = "";
+
+    renderGrid();
+    renderExistingList();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if(confirm('Esto eliminará tus botones personalizados y restaurará la lista original. ¿Continuar?')){
+      tools = DEFAULT_TOOLS.slice();
+      saveTools(tools);
+      renderGrid();
+      renderExistingList();
+    }
+  });
+
+  renderGrid();
 </script>
 
 </body>
